@@ -1,0 +1,33 @@
+{
+  "id": "7715c1c3-c015-4e6a-ac25-47b87d220768",
+  "name": "Customer Feedback",
+  "publisher": "Fernando Pena",
+  "version": "1.0.2.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+   "platform": "24.0.0.0",
+  "application": "24.0.0.0",
+  "runtime": "13.0",
+
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 50149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "features": [
+    "NoImplicitWith"
+  ]
+}
