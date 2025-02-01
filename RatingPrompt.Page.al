@@ -1,8 +1,8 @@
 page 50102 "Rating Prompt"
 {
-    Caption = 'Enter Rating (1..5)';
-    PageType = StandardDialog; // Use StandardDialog for modal prompts
+    PageType = StandardDialog;
     ApplicationArea = All;
+    Caption = 'Enter Rating (1..5)';
     Editable = true;
 
     layout
@@ -13,13 +13,7 @@ page 50102 "Rating Prompt"
             {
                 ApplicationArea = All;
                 Caption = 'Rating (1..5)';
-                ToolTip = 'Enter a rating between 1 and 5.';
-
-                trigger OnValidate()
-                begin
-                    if not (RatingInput in [1 .. 5]) then
-                        Error('Rating must be between 1 and 5.');
-                end;
+                ToolTip = 'Select a rating between 1 and 5.';
             }
         }
     }
@@ -33,9 +27,9 @@ page 50102 "Rating Prompt"
                 Caption = 'OK';
                 trigger OnAction()
                 begin
-                    if not (RatingInput in [1 .. 5]) then
-                        Error('Rating must be between 1 and 5.');
-                    Close; // Returns Action::OK
+                    if RatingInput = RatingInput::None then
+                        Error('Please select a rating between 1 and 5.');
+                    Close;
                 end;
             }
             action(Cancel)
@@ -43,17 +37,33 @@ page 50102 "Rating Prompt"
                 Caption = 'Cancel';
                 trigger OnAction()
                 begin
-                    Close; // Returns Action::Cancel
+                    Close;
                 end;
             }
         }
     }
 
+    // Public procedure to retrieve the selected rating
     procedure GetRating(): Integer
     begin
-        exit(RatingInput);
+        case RatingInput of
+            RatingInput::None:
+                exit(0); // Default case
+            RatingInput::"1":
+                exit(1);
+            RatingInput::"2":
+                exit(2);
+            RatingInput::"3":
+                exit(3);
+            RatingInput::"4":
+                exit(4);
+            RatingInput::"5":
+                exit(5);
+            else
+                exit(0);
+        end;
     end;
 
     var
-        RatingInput: Integer;
+        RatingInput: Enum "Rating Enum"; // Uses the updated Rating Enum
 }
