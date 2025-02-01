@@ -1,42 +1,27 @@
-// Define a page extension for the "Customer Card" page
-pageextension 50110 CustomerCardExt extends "Customer Card"
+pageextension 50112 "Customer Card Ext" extends "Customer Card"
 {
-    // Add actions to the page
     actions
     {
-        // Add the new action to the end of the "Processing" action group
-        addlast(processing)
+        addlast(Processing)
         {
-            // Define a new action called "OpenCustomerFeedback"
-            action(OpenCustomerFeedback)
+            // Add a new action to calculate the average rating
+            action("Calculate Average Rating")
             {
-                // Specify that this action is available in all application areas
+                Caption = 'Calculate Average Rating';
                 ApplicationArea = All;
-
-                // Set the caption (label) for the action that will appear in the UI
-                Caption = 'View Customer Feedback';
-
-                // Assign an icon to the action for better visual representation
-                Image = View;
+                Image = Calculate;
 
                 // Define what happens when the action is triggered
                 trigger OnAction()
                 var
-                    // Declare a variable for the "Customer Feedback List" page
-                    FeedbackPage: Page "Customer Feedback List";
-
-                    // Declare a variable for the "Customer Feedback" record to apply filters
-                    CustomerFilter: Record "Customer Feedback";
+                    FeedbackManager: Codeunit "CustomerFeedbackMgmt"; // Declare the codeunit
+                    AvgRating: Decimal; // Variable to store the calculated average rating
                 begin
-                    // Set a filter on the "Customer Feedback" table to only show records
-                    // where the "Customer No." matches the current customer's number
-                    CustomerFilter.SetRange("Customer No.", Rec."No.");
+                    // Call the CalculateAverageRating function for the current customer
+                    AvgRating := FeedbackManager.CalculateAverageRating(Rec."No.");
 
-                    // Apply the filter to the "Customer Feedback List" page
-                    FeedbackPage.SetTableView(CustomerFilter);
-
-                    // Open the "Customer Feedback List" page in a modal dialog
-                    FeedbackPage.RunModal();
+                    // Display the result in a message
+                    Message('Average Rating for Customer %1: %2', Rec."No.", AvgRating);
                 end;
             }
         }
