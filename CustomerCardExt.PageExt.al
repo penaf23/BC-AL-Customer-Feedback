@@ -4,28 +4,42 @@ pageextension 50112 "Customer Card Ext" extends "Customer Card"
     {
         addlast(Processing)
         {
-            // Add a new action to calculate the average rating
-            action("Calculate Average Rating")
+            action("Calculate Average Rating") // This is already present in your code
             {
                 Caption = 'Calculate Average Rating';
                 ApplicationArea = All;
                 Image = Calculate;
 
-                // Define what happens when the action is triggered
                 trigger OnAction()
                 var
-                    FeedbackManager: Codeunit "CustomerFeedbackMgmt"; // Declare the codeunit
-                    AvgRating: Decimal; // Variable to store the calculated average rating
+                    FeedbackManager: Codeunit "CustomerFeedbackMgmt";
+                    AvgRating: Decimal;
                 begin
-                    // Call the CalculateAverageRating function for the current customer
                     AvgRating := FeedbackManager.CalculateAverageRating(Rec."No.");
 
-                    // Display the result in a message
                     if AvgRating = -1 then
                         Message('No Feedback Registered for Customer %1', Rec."No.")
                     else
                         Message('Average Rating for Customer %1: %2', Rec."No.", AvgRating);
+                end;
+            }
 
+            // ✅ This is the required UI integration
+            action("View Customer Feedback")
+            {
+                Caption = 'View Customer Feedback';
+                ApplicationArea = All;
+                Image = View;
+
+                trigger OnAction()
+                var
+                    FeedbackPage: Page "Customer Feedback List";
+                    CustomerFilter: Record "Customer Feedback";
+                begin
+                    // Filter the feedback list by the selected customer
+                    CustomerFilter.SetRange("Customer No.", Rec."No.");
+                    FeedbackPage.SetTableView(CustomerFilter);
+                    FeedbackPage.RunModal();
                 end;
             }
         }
