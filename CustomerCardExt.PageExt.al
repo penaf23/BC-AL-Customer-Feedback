@@ -21,7 +21,11 @@ pageextension 50112 "Customer Card Ext" extends "Customer Card"
                     AvgRating := FeedbackManager.CalculateAverageRating(Rec."No.");
 
                     // Display the result in a message
-                    Message('Average Rating for Customer %1: %2', Rec."No.", AvgRating);
+                    if AvgRating = -1 then
+                        Message('No Feedback Registered for Customer %1', Rec."No.")
+                    else
+                        Message('Average Rating for Customer %1: %2', Rec."No.", AvgRating);
+
                 end;
             }
         }

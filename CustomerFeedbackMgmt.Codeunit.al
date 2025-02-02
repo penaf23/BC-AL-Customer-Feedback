@@ -32,7 +32,10 @@ codeunit 50110 "CustomerFeedbackMgmt"
         end;
 
         // Return the average rating (0 if no feedback exists for the customer)
+        if FeedbackCount = 0 then
+            exit(-1);
         exit(AverageRating);
+
     end;
 
     // Define a procedure to calculate the average rating for all customers
