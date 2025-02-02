@@ -1,4 +1,3 @@
-// Define a new page with the ID 50101 and name "Customer No. Prompt"
 page 50101 "Customer No. Prompt"
 {
     // Set the caption for the page
@@ -38,7 +37,15 @@ page 50101 "Customer No. Prompt"
             {
                 Caption = 'OK';
                 trigger OnAction()
+                var
+                    Customer: Record Customer;
                 begin
+                    // Validate the customer number if it is not blank
+                    if CustomerNoInput <> '' then begin
+                        if not Customer.Get(CustomerNoInput) then
+                            Error('Customer No. %1 does not exist.', CustomerNoInput);
+                    end;
+
                     Close; // Closes the page and returns Action::OK
                 end;
             }
