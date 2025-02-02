@@ -31,11 +31,13 @@ codeunit 50110 "CustomerFeedbackMgmt"
                 AverageRating := TotalRating / FeedbackCount;
         end;
 
-        // Return the average rating (0 if no feedback exists for the customer)
+        // Return -1 if no feedback exists for the customer
         if FeedbackCount = 0 then
             exit(-1);
-        exit(AverageRating);
 
+        // Round the average rating to two decimal places (e.g., 4.27)
+        AverageRating := Round(AverageRating, 0.01);
+        exit(AverageRating);
     end;
 
     // Define a procedure to calculate the average rating for all customers
@@ -69,6 +71,9 @@ codeunit 50110 "CustomerFeedbackMgmt"
                     if FeedbackCount > 0 then
                         AverageRating := TotalRating / FeedbackCount;
                 end;
+
+                // Round the average rating to two decimal places (e.g., 4.27)
+                AverageRating := Round(AverageRating, 0.01);
 
                 // Add the customer and their average rating to the dictionary
                 CustomerAverageRating.Add(Customer."No.", AverageRating);
